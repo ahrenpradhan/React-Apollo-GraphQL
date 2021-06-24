@@ -2,22 +2,29 @@ import React, { useEffect, useRef, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
 import Header from "./components/header/header.component";
-import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
-import { selectCurrentUser, setCurrentUser } from "./actions/user.actions";
-import { createStructuredSelector } from "reselect";
 import CheckoutPage from "./pages/checkout/checkout.component";
+import {
+  addDataToFirestore,
+  auth,
+  createUserProfileDocument,
+} from "./firebase/firebase.utils";
+import { selectCurrentUser, setCurrentUser } from "./actions/user.actions";
+import { selectCollectionsForPreview } from "./actions/collections.actions";
 
 function App(props) {
   const unsubscribeFromAuth = useRef(null);
 
   useEffect(() => {
+    // onAuthStateChanged listener listens for any auth changes
     unsubscribeFromAuth.current = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
+        // onSnapshot listener listener for any update on snapshot (document)
         userRef.onSnapshot((snapShot) => {
           props.setCurrentUser({
             id: snapShot.id,
@@ -27,6 +34,16 @@ function App(props) {
       }
       // when signed out
       props.setCurrentUser(userAuth);
+
+      // For adding data into Firestore
+      /*
+      addDataToFirestore(
+        "collections",
+        props.collections.map(({ title, items }) => {
+          return { title, items };
+        })
+      );
+      */
     });
 
     return () => {
@@ -65,6 +82,7 @@ const mapStateToProps = (state) => {
 // With Memoization
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  collections: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = (dispatch) => {

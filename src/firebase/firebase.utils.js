@@ -18,16 +18,17 @@ export const fireStore = firebase.firestore();
 export const createUserProfileDocument = async (userAuth, addtionalData) => {
   if (!userAuth) return;
 
+  // Document reference to check whether the data exist or not
   const userRef = fireStore.doc(`users/${userAuth.uid}`);
-  // using collection reference for getting the data
-  const snapshot = userRef.get();
+
+  const snapshot = userRef.get(); // ... Document snapshot
 
   if (!snapshot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
     try {
-      // using document reference for getting the data
+      // document reference for setting the data of resp document
       userRef.set({
         displayName,
         email,
@@ -39,6 +40,40 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
     }
   }
   return userRef;
+};
+
+export const addDataToFirestore = async (collectionKey, data) => {
+  // Collection reference to check whether the collection exist or not
+  const collectionRef = fireStore.collection(collectionKey);
+
+  // for providing batch updates
+  const batch = fireStore.batch();
+  data.forEach((document) => {
+    // creating document reference
+    const newDocRef = collectionRef.doc();
+    batch.set(newDocRef, document);
+  });
+
+  // firing batch requests
+  return await batch.commit();
+};
+
+export const collectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((document) => {
+    const { title, items } = document.data();
+
+    return {
+      routeName: encodeURI(title.toLowerCase()), //  encodeURI is JS method which will return validate url format
+      id: document.id,
+      title,
+      items,
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, document) => {
+    accumulator[document.title.toLowerCase()] = document;
+    return accumulator;
+  }, {});
 };
 
 const provider = new firebase.auth.GoogleAuthProvider();

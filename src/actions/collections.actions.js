@@ -1,4 +1,8 @@
 import { createSelector } from "reselect";
+import {
+  collectionsSnapshotToMap,
+  fireStore,
+} from "../firebase/firebase.utils";
 
 const mapCollection = {
   hats: 1,
@@ -30,3 +34,18 @@ export const selectCollection = (collectionParam) =>
     // with data Normalization (convert array into objects for huge data)
     return collections[collectionParam];
   });
+
+export const setCollections = (collections) => {
+  return {
+    type: "SET_COLLECTION",
+    payload: collections,
+  };
+};
+
+export const fetchCollections = () => (dispatch) => {
+  const collectionRef = fireStore.collection("collections");
+  collectionRef.get().then((collectionSnapshot) => {
+    const collectionsMap = collectionsSnapshotToMap(collectionSnapshot);
+    dispatch(setCollections(collectionsMap));
+  });
+};
