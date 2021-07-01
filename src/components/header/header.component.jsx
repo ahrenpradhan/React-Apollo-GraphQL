@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { selectCartIsHidden } from "../../actions/cart.actions";
-import { selectCurrentUser } from "../../actions/user.actions";
+import { selectCurrentUser, userSignOut } from "../../actions/user.actions";
 
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import { auth } from "../../firebase/firebase.utils";
@@ -19,7 +19,7 @@ import {
 
 import "./header.styles.scss";
 
-const Header = ({ currentUser, hidden }) => (
+const Header = ({ currentUser, hidden, dispatch }) => (
   // <div className="header">
   //   <Link className="logo-container" to="/">
   //     <Logo className="logo" />
@@ -58,7 +58,7 @@ const Header = ({ currentUser, hidden }) => (
         CONTACT
       </OptionLink>
       {currentUser ? (
-        <OptionDiv className="option" onClick={() => auth.signOut()}>
+        <OptionDiv className="option" onClick={() => dispatch(userSignOut())}>
           SIGN OUT
         </OptionDiv>
       ) : (

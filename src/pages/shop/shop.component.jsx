@@ -1,25 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { Route } from "react-router-dom";
-import { fetchCollections } from "../../actions/collections.actions";
 import CategoryPage from "../../components/category-page/category-page.component";
 import CollectionOverview from "../../components/collection-overview/collection-overview.component";
 import {
   collectionsSnapshotToMap,
   fireStore,
 } from "../../firebase/firebase.utils";
+import {
+  fetchCollections,
+  fetchAllCollections,
+} from "../../actions/collections.actions";
 import WithSpinner from "../../hoc/with-spinner/with-spinner.component";
 
 const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
 const CategoryPageWithSpinner = WithSpinner(CategoryPage);
 
-const ShopPage = ({ match, fetchCollections }) => {
+const ShopPage = ({ match, fetchAllCollections }) => {
   const [loading, setLoading] = useState(true);
-  const unsubscribeFromSnapshot = useRef(null);
+  // const unsubscribeFromSnapshot = useRef(null);
 
   useEffect(() => {
     (async () => {
-      await fetchCollections();
+      // await fetchCollections();  // redux-thunk
+      await fetchAllCollections(); // redux-saga
       setLoading(false);
     })();
 
@@ -59,7 +63,8 @@ const ShopPage = ({ match, fetchCollections }) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCollections: () => dispatch(fetchCollections()),
+    // fetchCollections: () => dispatch(fetchCollections()),  // redux-thunk
+    fetchAllCollections: () => dispatch(fetchAllCollections()), // redux-saga
   };
 };
 

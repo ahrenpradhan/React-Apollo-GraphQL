@@ -6,10 +6,12 @@ import CustomButton from "../custom-button/custom-button.component";
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 
 import "./sign-up.styles.scss";
+import { userSignOut, userSignUp } from "../../actions/user.actions";
+import { connect } from "react-redux";
 
 class SignUp extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       displayName: "",
@@ -28,7 +30,10 @@ class SignUp extends React.Component {
       alert("passwords don't match");
       return;
     }
+    this.props.userSignUp(this.state);
+    //Executing with redux saga
 
+    /*
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
@@ -45,6 +50,7 @@ class SignUp extends React.Component {
     } catch (error) {
       console.error(error);
     }
+    */
   };
 
   handleChange = (event) => {
@@ -99,4 +105,10 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+const mapStateToProps = (dispatch) => {
+  return {
+    userSignUp: (data) => dispatch(userSignUp(data)),
+  };
+};
+
+export default connect(null, mapStateToProps)(SignUp);

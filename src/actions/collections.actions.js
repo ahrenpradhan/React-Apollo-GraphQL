@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+import { createSelector } from "reselect"; //... for memoization
 import {
   collectionsSnapshotToMap,
   fireStore,
@@ -12,18 +12,22 @@ const mapCollection = {
   mens: 5,
 };
 
+// input selector (doesnot use createSelector)
 const selectShop = (state) => state.shop;
 
+// output selector (uses createSelector)  ... for memoization
 export const selectCollections = createSelector(
   [selectShop],
   (shop) => shop.collections
 );
 
+// output selector (uses createSelector)  ... for memoization
 export const selectCollectionsForPreview = createSelector(
   [selectCollections],
   (collections) => Object.keys(collections).map((key) => collections[key])
 );
 
+// output selector (uses createSelector)  ... for memoization
 export const selectCollection = (collectionParam) =>
   createSelector([selectCollections], (collections) => {
     // without data Normalization (using array for huge data)
@@ -48,4 +52,11 @@ export const fetchCollections = () => (dispatch) => {
     const collectionsMap = collectionsSnapshotToMap(collectionSnapshot);
     dispatch(setCollections(collectionsMap));
   });
+};
+
+// Saga Actions
+export const fetchAllCollections = () => {
+  return {
+    type: "FETCH_ALL_COLLECTIONS",
+  };
 };

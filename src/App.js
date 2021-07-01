@@ -13,14 +13,22 @@ import {
   auth,
   createUserProfileDocument,
 } from "./firebase/firebase.utils";
-import { selectCurrentUser, setCurrentUser } from "./actions/user.actions";
+import {
+  authenticateUserSession,
+  selectCurrentUser,
+  setCurrentUser,
+} from "./actions/user.actions";
 import { selectCollectionsForPreview } from "./actions/collections.actions";
 
 function App(props) {
   const unsubscribeFromAuth = useRef(null);
 
   useEffect(() => {
+    // We executed Sign In/Up with redux saga
+    props.authenticateUserSession();
+
     // onAuthStateChanged listener listens for any auth changes
+    /* 
     unsubscribeFromAuth.current = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -36,19 +44,18 @@ function App(props) {
       props.setCurrentUser(userAuth);
 
       // For adding data into Firestore
-      /*
-      addDataToFirestore(
-        "collections",
-        props.collections.map(({ title, items }) => {
-          return { title, items };
-        })
-      );
-      */
+      // addDataToFirestore(
+      //   "collections",
+      //   props.collections.map(({ title, items }) => {
+      //     return { title, items };
+      //   })
+      // );
     });
-
+    
     return () => {
       unsubscribeFromAuth.current();
     };
+          */
   }, []);
 
   return (
@@ -87,7 +94,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+    authenticateUserSession: () => dispatch(authenticateUserSession()),
   };
 };
 
