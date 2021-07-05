@@ -5,7 +5,7 @@ import {
   createUserProfileDocument,
   getCurrentUser,
   provider,
-} from "../firebase/firebase.utils";
+} from "../utils/firebase.utils";
 
 function* createProfile(user, additionalData) {
   try {

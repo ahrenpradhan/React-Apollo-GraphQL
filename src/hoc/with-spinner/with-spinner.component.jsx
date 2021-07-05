@@ -1,3 +1,5 @@
+// HOC is not user in this project, as This is managed by Apllo and GraphQL
+
 import React from "react";
 import { SpinnerContainer, SpinnerOverlay } from "./with-spinner.styles";
 

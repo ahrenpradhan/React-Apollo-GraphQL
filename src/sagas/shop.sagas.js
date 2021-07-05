@@ -1,9 +1,6 @@
 import { takeEvery, takeLatest, call, put } from "@redux-saga/core/effects";
 import { setCollections } from "../actions/collections.actions";
-import {
-  collectionsSnapshotToMap,
-  fireStore,
-} from "../firebase/firebase.utils";
+import { collectionsSnapshotToMap, fireStore } from "../utils/firebase.utils";
 
 function* fetchCollections() {
   const collectionRef = fireStore.collection("collections");
