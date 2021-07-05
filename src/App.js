@@ -6,13 +6,8 @@ import { createStructuredSelector } from "reselect";
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component";
-import Header from "./components/header/header.component";
+import { default as Header } from "./components/header/header.container";
 import CheckoutPage from "./pages/checkout/checkout.component";
-import {
-  addDataToFirestore,
-  auth,
-  createUserProfileDocument,
-} from "./firebase/firebase.utils";
 import {
   authenticateUserSession,
   selectCurrentUser,
@@ -26,36 +21,6 @@ function App(props) {
   useEffect(() => {
     // We executed Sign In/Up with redux saga
     props.authenticateUserSession();
-
-    // onAuthStateChanged listener listens for any auth changes
-    /* 
-    unsubscribeFromAuth.current = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-        // onSnapshot listener listener for any update on snapshot (document)
-        userRef.onSnapshot((snapShot) => {
-          props.setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data(),
-          });
-        });
-      }
-      // when signed out
-      props.setCurrentUser(userAuth);
-
-      // For adding data into Firestore
-      // addDataToFirestore(
-      //   "collections",
-      //   props.collections.map(({ title, items }) => {
-      //     return { title, items };
-      //   })
-      // );
-    });
-    
-    return () => {
-      unsubscribeFromAuth.current();
-    };
-          */
   }, []);
 
   return (
@@ -76,15 +41,6 @@ function App(props) {
     </div>
   );
 }
-
-// Without Memoization (// though redux check props by shallow equality and will prevent re-rendering but using reselect will help us to prvent recalculation of logic)
-/*
-const mapStateToProps = (state) => {
-  return {
-    currentUser: state.user.currentUser,
-  };
-};
-*/
 
 // With Memoization
 const mapStateToProps = createStructuredSelector({

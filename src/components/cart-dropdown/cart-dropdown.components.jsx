@@ -1,7 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { selectCartItems, toggleCartDetails } from "../../actions/cart.actions";
 import CartItem from "../cart-items/cart-items.component";
 import CustomButton from "../custom-button/custom-button.component";
 import "./cart-dropdown.styles.scss";
@@ -18,7 +16,7 @@ const CartDropdown = (props) => (
     <CustomButton
       onClick={() => {
         props.history.push("/checkout");
-        props.dispatch(toggleCartDetails());
+        props.toggleCartDetails();
       }}
     >
       GO TO CHECKOUT
@@ -26,8 +24,4 @@ const CartDropdown = (props) => (
   </div>
 );
 
-const mapStateToProps = (state) => {
-  return { cartItems: selectCartItems(state) }; // though redux check props by shallow equality and will prevent re-rendering.
-};
-
-export default withRouter(connect(mapStateToProps)(CartDropdown));
+export default withRouter(CartDropdown);

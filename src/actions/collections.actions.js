@@ -1,8 +1,5 @@
 import { createSelector } from "reselect"; //... for memoization
-import {
-  collectionsSnapshotToMap,
-  fireStore,
-} from "../firebase/firebase.utils";
+import { collectionsSnapshotToMap, fireStore } from "../utils/firebase.utils";
 
 const mapCollection = {
   hats: 1,
