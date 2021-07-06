@@ -1,5 +1,6 @@
-import { gql } from "apollo-boost";
-import { Mutation, Query } from "react-apollo";
+
+import { gql } from '@apollo/client'
+import { Mutation, Query } from "@apollo/client/react/components";
 import { GET_CART_ITEMS } from "../../resolvers/cartResolvers";
 import CartDropdown from "./cart-dropdown.components";
 
@@ -17,7 +18,7 @@ const CartDropdownContainer = () => {
           <Query query={GET_CART_ITEMS}>
             {({ data }) => (
               <CartDropdown
-                cartItems={data.cartItems}
+                cartItems={data?.cartItems || data}
                 toggleCartDetails={toggleCartDetails}
               />
             )}

@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import {gql} from '@apollo/client'
 
 // query to local store
 export const IS_CART_DETAILS_HIDDEN = gql`

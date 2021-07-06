@@ -1,5 +1,5 @@
-import { gql } from "apollo-boost";
-import { Mutation, Query } from "react-apollo";
+import {gql} from '@apollo/client'
+import { Mutation, Query } from "@apollo/client/react/components";
 import { GET_TOTAL_CART_ITEMS } from "../../resolvers/cartResolvers";
 import CartIcon from "./cart-icon.components";
 
@@ -17,7 +17,7 @@ const CartIconContainer = () => {
           {({ data }) => (
             <CartIcon
               toggleCartDetails={toggleCartDetails}
-              totalCount={data.totalCartItems}
+              totalCount={data?.totalCartItems || data}
             />
           )}
         </Query>
