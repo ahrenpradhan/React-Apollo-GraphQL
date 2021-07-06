@@ -5,12 +5,12 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 
 // GraphQL
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from '@apollo/client'
 
 import "./index.css";
 import App from "./App";
 import { store, persistor } from "./store";
-import { client } from "./utils/apollo.utils";
+import { getApolloClient } from "./utils/apollo.utils";
 
 /*  for GraphQL see
   1. apollo.utils.js
@@ -23,16 +23,29 @@ import { client } from "./utils/apollo.utils";
   8. collection-item
 */
 
+const MainApp = () => {
+  const [client, setClient] = React.useState(null);
+  const [hasLoaded, setHasLoaded] = React.useState(null);
+  React.useEffect(() => {
+    let _client = getApolloClient();
+    setClient(_client);
+    setHasLoaded(true)
+  }, [])
+  return hasLoaded ? (
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <BrowserRouter>
+          {/* PersistGate helps to REHYDRATE the store on refresh */}
+          <PersistGate persistor={persistor}>
+            <App />
+          </PersistGate>
+        </BrowserRouter>
+      </Provider>
+    </ApolloProvider>
+  ) : <></>
+}
+
 ReactDOM.render(
-  <ApolloProvider client={client}>
-    <Provider store={store}>
-      <BrowserRouter>
-        {/* PersistGate helps to REHYDRATE the store on refresh */}
-        <PersistGate persistor={persistor}>
-          <App />
-        </PersistGate>
-      </BrowserRouter>
-    </Provider>
-  </ApolloProvider>,
+  <MainApp />,
   document.getElementById("root")
 );

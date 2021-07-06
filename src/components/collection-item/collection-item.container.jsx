@@ -1,5 +1,5 @@
-import { gql } from "apollo-boost";
-import { Mutation } from "react-apollo";
+import {gql} from '@apollo/client'
+import { Mutation, } from "@apollo/client/react/components";
 import CollectionItem from "./collection-item.component";
 
 const ADD_ITEM_TO_CART = gql`

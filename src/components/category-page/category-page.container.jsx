@@ -1,5 +1,5 @@
-import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
+import {gql} from '@apollo/client'
+import { Mutation, Query } from "@apollo/client/react/components";
 import Spinner from "../spinner/spinner.component";
 import CategoryPage from "./category-page.component";
 

@@ -1,6 +1,6 @@
 import React from "react";
-import { gql } from "apollo-boost";
-import { Query } from "react-apollo";
+import {gql} from '@apollo/client'
+import {  Query } from "@apollo/client/react/components";
 import Spinner from "../spinner/spinner.component";
 import CollectionOverview from "./collection-overview.component";
 

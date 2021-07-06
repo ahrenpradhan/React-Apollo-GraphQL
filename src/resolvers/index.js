@@ -1,4 +1,4 @@
-import { gql } from "apollo-boost";
+import {gql} from '@apollo/client'
 import { addItemToCart, toggleCartDetails } from "./cartResolvers";
 
 // "extend type Mutation/type" extends or updates the existing Mutation/Type on GraphQL Server
